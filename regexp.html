@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reg exp</title>
+</head>
+<body>
+    <script>
+        console.log('Алексей'.match(/[а-яА-Я]+/)); // [Алексей]
+        console.log('Alexey'.match(/[а-яА-Я]+/)); // null
+        console.log('Alexey'.match(/[а-яА-Яa-zA-Z]+/)); // [Alexey]
+        console.log('Алёша'.match(/[а-яА-Яa-zA-Z]+/)); // [Ал]
+        console.log('Алёша'.match(/[а-яА-Яa-zA-Z]+/g)); // [Ал, ша]
+        // решаем проблему с буквой ё и Ё
+        console.log('Алёша'.match(/[а-яА-Яa-zA-ZёЁ]+/)); // [Алёша]
+        
+        
+        console.log('Алёша'.match(/\w+/)); // null
+        console.log('Alexey'.match(/\w+/)); // [Alexey]
+
+        console.log('Алёша'.match(/\D+/)); // [Алёша]
+        console.log('Alexey'.match(/\D+/)); // [Alexey]
+
+
+        // ЭЛЕГАНТНЫЙ вариант решения проблемы с буквой ё и Ё,
+        // НО ОН НЕ РАБОТАЕТ ХЕ-ХЕ
+        // классы POSIX
+        console.log('Alexey'.match(/[[:alpha:]]+/)); // null
+        console.log('Алёша'.match(/[[:alpha:]]+/)); // null
+        console.log('324234'.match(/[[:digit:]]+/)); // null
+
+        console.log('--------------------------------------',
+        'Позитивный просмотр вперёд');
+
+        // Позитивный просмотр вперёд
+        console.log('Блюдо1'.match(/Блюдо(?=11)/gi)); // null
+        console.log('Блюдо11'.match(/Блюдо(?=11)/gi)); // [Блюдо]
+        console.log('Блюдо511'.match(/Блюдо(?=11)/gi)); // null
+        console.log('--------------------------------------',
+        'Негативный просмотр вперёд с отрицанием');
+
+        // Негативный просмотр вперёд с отрицанием
+        console.log('Блюдо1'.match(/Блюдо(?!11)/gi)); // [Блюдо]
+        console.log('Блюдо11'.match(/Блюдо(?!11)/gi)); // null
+        console.log('Блюдо511'.match(/Блюдо(?!11)/gi)); // [Блюдо]
+        console.log('Блюдо113'.match(/Блюдо(?!11)/gi)); // null
+
+        // Позитивный просмотр назад
+        console.log('--------------------------------------',
+        'Позитивный просмотр назад');
+        console.log('Ретунских Тимофей'.match(/(?<=Ретунских )Тимофей/)); // Тимофей
+        console.log('Анисимов Тимофей'.match(/(?<=Ретунских )Тимофей/)); // null
+
+        // Позитивный просмотр назад с отрицанием
+        console.log('--------------------------------------',
+        'Позитивный просмотр назад с отрицанием');
+        console.log('Ретунских Тимофей'.match(/(?<!Ретунских )Тимофей/)); // null
+        console.log('Анисимов Тимофей'.match(/(?<!Ретунских )Тимофей/)); // Тимофей
+
+
+        // (?:...)Скобочные группы (группировка плюс квантификатор)
+        console.log('--------------------------------------',
+        '(?:...)Скобочные группы (группировка плюс квантификатор)');
+        console.log('text txt1'.match(/^(?:\w+\s)*(\w+)$/)); // ['text txt1', 'txt1']
+        console.log('text txt1'.match(/^(\w+\s)*(\w+)$/)); // ['text txt1', 'text ', 'txt1']
+
+
+        // Задача: Удаление из строки 
+        // ВСЕХ илишних пробелов, табуляций и "вайтспейсов" (>1)
+        console.log('--------------------------------------',
+        'Задача: Удаление из строки ВСЕХ илишних пробелов, табуляций и "вайтспейсов" (>1)');
+        const text = `     some     string  with crazy      spaces
+        cat         and          dog
+        dog  and cat `;
+        // .trim() обрезает символы пробелов в начале и конце строки
+        const formatedText = text.replace(/\s{2,}/g, ' ').trim(); // обрезает символы пробелов
+        // в начале и конце строки
+        console.log(formatedText);
+    </script>
+</body>
+</html>
